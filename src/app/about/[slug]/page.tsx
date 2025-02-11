@@ -17,6 +17,28 @@ export async function generateMetadata({
   }) {
     const { slug } = await params;
     const data = livingThingsData[Number(slug) - 1];
+
+    const title = `About ${data?.name} #${data?.id.toString().padStart(4, "0")} - Living Things`
+    const description = `${data.name} is a living thing in Josh's house. Come learn more about it and the other things living in his house`
+
+    return {
+      title: title,
+      description,
+      openGraph: {
+        title: title,
+        description,
+        images: [
+          {
+            url: baseUrl + data.imgUrl,
+            alt: data.name,
+          },
+        ],
+      },
+
+      alternates: {
+        canonical: "https://iving-thing-ssr-seo-nextjs.vercel.app/",
+      },
+    };
 }
 
 export default async function Page({
@@ -75,6 +97,7 @@ export default async function Page({
   
           <div>
             <h2> Other Things</h2>
+            <br />
             <div className={styles.otherThings}>
               {data &&
                 livingThingsData
